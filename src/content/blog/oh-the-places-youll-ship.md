@@ -2,6 +2,7 @@
 title: "Oh, the Place's You'll Ship!"
 description: 'A poem'
 pubDate: 'April 05 2026'
+heroImage: '../../assets/oh-the-places-youll-ship.jpg'
 ---
 
 The world’s moving fast so it's time to keep up   
