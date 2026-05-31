@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+
+const quotes = (await getCollection('quotes')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Quotes" description="Quotes and passages I've saved" />
+		<style>
+			main {
+				width: 720px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			h1 {
+				margin-bottom: 1.5em;
+			}
+			.quote-list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 2.5rem;
+			}
+			.quote-item {
+				border-bottom: 1px solid rgb(var(--gray-light));
+				padding-bottom: 2.5rem;
+			}
+			.quote-item:last-child {
+				border-bottom: none;
+			}
+			.quote-item blockquote {
+				margin: 0 0 0.75rem;
+			}
+			.attribution {
+				color: rgb(var(--gray));
+				font-size: 0.9em;
+				margin: 0 0 0.5rem;
+			}
+			.meta {
+				font-size: 0.85em;
+				color: rgb(var(--gray));
+			}
+			.quote-item a {
+				text-decoration: none;
+			}
+			.quote-item a:hover blockquote {
+				border-left-color: var(--accent-dark);
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Quotes</h1>
+			<ul class="quote-list">
+				{
+					quotes.map((quote) => (
+						<li class="quote-item">
+							<a href={`/quotes/${quote.id}/`}>
+								<blockquote>{quote.data.title}</blockquote>
+							</a>
+							<p class="attribution">
+								— <a href={quote.data.url}>{quote.data.sourceTitle}</a>
+								{quote.data.author && `, ${quote.data.author}`}
+							</p>
+							<p class="meta">
+								<FormattedDate date={quote.data.date} />
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
